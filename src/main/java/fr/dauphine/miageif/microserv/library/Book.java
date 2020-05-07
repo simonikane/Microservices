@@ -1,14 +1,15 @@
 package fr.dauphine.miageif.microserv.library;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Book {
+    //auto generate Ids
     @Id
-    private String ISBN;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    @Column
+    private String ISBN;
     @Column
     private String author;
     @Column

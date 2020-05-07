@@ -27,4 +27,9 @@ public class BookController {
         return repository.findByAuthor(author);
     }
 
+    @PostMapping("/book")
+    private String saveBook(@RequestBody Book book){
+        repository.save(book);
+        return book.getISBN();
+    }
 }
