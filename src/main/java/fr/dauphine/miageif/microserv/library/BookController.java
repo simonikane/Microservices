@@ -17,13 +17,13 @@ public class BookController {
     @Autowired
     private BookRepository repository;
     @GetMapping("/library/book/{ISBN}")
-    public Book findBook(@PathVariable String ISBN){
+    public Book findByISBN(@PathVariable String ISBN){
         Book book = repository.findByISBN(ISBN);
         return book;
     }
 
     @GetMapping("/library/book_by_author/{author}")
-    public List<Book> findBook2(@PathVariable String author){
+    public List<Book> findByAuthor(@PathVariable String author){
         return repository.findByAuthor(author);
     }
 
