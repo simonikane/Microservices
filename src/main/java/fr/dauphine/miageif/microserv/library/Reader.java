@@ -1,14 +1,13 @@
 package fr.dauphine.miageif.microserv.library;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class Reader {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String gender;
@@ -23,8 +22,7 @@ public class Reader {
 
     public Reader(){}
 
-    public Reader(int id, String gender, String name, String firstName, Date birthDate, String address) {
-        this.id = id;
+    public Reader(String gender, String name, String firstName, Date birthDate, String address) {
         this.gender = gender;
         this.name = name;
         this.firstName = firstName;
@@ -32,12 +30,8 @@ public class Reader {
         this.address = address;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getGender() {
