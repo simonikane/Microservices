@@ -16,7 +16,7 @@ public class BookController {
 
     @Autowired
     private BookRepository repository;
-    @GetMapping("/library/book/{ISBN}")
+    @GetMapping("/library/book_by_isbn/{ISBN}")
     public Book findByISBN(@PathVariable String ISBN){
         Book book = repository.findByISBN(ISBN);
         return book;
@@ -27,9 +27,27 @@ public class BookController {
         return repository.findByAuthor(author);
     }
 
-    @PostMapping("/book")
+    @PostMapping("/library/save_book")
     private String saveBook(@RequestBody Book book){
         repository.save(book);
         return book.getISBN();
     }
+
+    @PostMapping("/library/update_book")
+    private String updateBook(@RequestBody Book book){
+        if(repository.existsById(book.getId())){
+            repository.save(book);
+            return "OK";
+        }
+        return "KO";
+    }
+
+    @DeleteMapping("/library/delete_book/{id}")
+    private void deleteBook(@PathVariable Long id){
+        repository.deleteById(id);
+    }
+
+    @GetMapping("/library/find_all_books")
+    private List<Book> findAllBooks(){return repository.findAll();}
+
 }

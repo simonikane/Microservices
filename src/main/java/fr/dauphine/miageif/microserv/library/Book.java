@@ -7,6 +7,7 @@ public class Book {
     //auto generate Ids
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column
     private String ISBN;
@@ -67,5 +68,9 @@ public class Book {
 
     public void setEdition(int edition) {
         this.edition = edition;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
