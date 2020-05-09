@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
+@RestController
 public class ReaderController {
     // String se charge de la creation de l'instance
     @Autowired

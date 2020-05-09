@@ -1,8 +1,6 @@
 package fr.dauphine.miageif.microserv.library;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,8 +8,28 @@ import java.util.Objects;
 public class Loan {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @OneToOne
+    private Reader reader;
+
+    @OneToOne
+    private Book book;
+
+    public Loan(){}
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+
+
+    /*
     @Column
     private String ISBN;
     @Column
@@ -21,7 +39,6 @@ public class Loan {
     @Column
     private Date returnDate;
 
-    public Loan(){}
 
     public Loan(int id, String ISBN, int idReader, Date loanDate, Date returnDate) {
         this.id = id;
@@ -87,4 +104,7 @@ public class Loan {
     public int hashCode() {
         return Objects.hash(loanDate, returnDate);
     }
+
+
+     */
 }
