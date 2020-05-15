@@ -14,62 +14,29 @@ public class Loan {
     @OneToOne
     private Reader reader;
 
-    @OneToOne
+    @ManyToOne
     private Book book;
 
-    public Loan(){}
-
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-
-
-    /*
-    @Column
-    private String ISBN;
-    @Column
-    private int idReader;
     @Column
     private Date loanDate;
+
     @Column
     private Date returnDate;
 
-
-    public Loan(int id, String ISBN, int idReader, Date loanDate, Date returnDate) {
-        this.id = id;
-        this.ISBN = ISBN;
-        this.idReader = idReader;
-        this.loanDate = loanDate;
-        this.returnDate = returnDate;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getISBN() {
-        return ISBN;
+    public Reader getReader() {
+        return reader;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
-    public int getIdReader() {
-        return idReader;
-    }
-
-    public void setIdReader(int idReader) {
-        this.idReader = idReader;
+    public Book getBook() {
+        return book;
     }
 
     public Date getLoanDate() {
@@ -88,14 +55,39 @@ public class Loan {
         this.returnDate = returnDate;
     }
 
+    public Loan(){}
+
+    public Loan(Reader reader, Book book, Date loanDate, Date returnDate) {
+        this.reader = reader;
+        this.book = book;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+    }
+
+    public boolean isBetweenDatesLoanAndReturn(Date date){
+
+        if(this.loanDate.after(date) &&  this.returnDate.before(date)) return false;
+
+        if(this.loanDate.equals(date) || this.returnDate.equals(date)) return false;
+
+        return true;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Loan)) return false;
         Loan loan = (Loan) o;
-        return id == loan.id &&
-                idReader == loan.idReader &&
-                ISBN.equals(loan.ISBN) &&
+        return reader.equals(loan.reader) &&
+                book.equals(loan.book) &&
                 Objects.equals(loanDate, loan.loanDate) &&
                 Objects.equals(returnDate, loan.returnDate);
     }
@@ -105,6 +97,10 @@ public class Loan {
         return Objects.hash(loanDate, returnDate);
     }
 
-
-     */
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id=" + id +
+                '}';
+    }
 }
