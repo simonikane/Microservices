@@ -2,6 +2,7 @@ package fr.dauphine.miageif.microserv.library;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.transform.sax.SAXResult;
@@ -33,7 +34,7 @@ public class LoanController {
     private String saveLoan(@RequestBody Map<String,Object> bodyContent){
 
         //TODO : Recupérer from JSON
-        Long bookId = Long.valueOf((int) bodyContent.get("book_id"));
+        List listBookIds = (List) bodyContent.get("book_id");
         Long readerId = Long.valueOf((int) bodyContent.get("reader_id"));
 
 
@@ -49,28 +50,36 @@ public class LoanController {
         Calendar calendar = Calendar.getInstance(); calendar.setTime(loanDate); calendar.add(Calendar.WEEK_OF_MONTH,2);
         Date returnDate = calendar.getTime();
 
-        Book book = bookRepository.getOne(bookId);
-        Reader reader = readerRepository.getOne(readerId);
+        for (Object bookIdObject:
+            listBookIds) {
 
-        //create loan instantion
-        Loan loan = new Loan(reader,book,loanDate,returnDate);
+            Long bookId = Long.valueOf((int) bookIdObject);
+            Book book = bookRepository.getOne(bookId);
+            Reader reader = readerRepository.getOne(readerId);
 
-        if(loanCanBeAddToDataBase(loan,loanRepository)){
-            loanRepository.save(loan);
+            //create loan instantion
+            Loan loan = new Loan(reader,book,loanDate,returnDate);
+
+            if(loanCanBeAddToDataBase(loan,loanRepository)){
+                loanRepository.save(loan);
+            }
         }
+
         return "Ok";
     }
 
     private boolean loanCanBeAddToDataBase(Loan loan, LoanRepository loanRepository){
         List<Loan> loans = loanRepository.findByBookId(loan.getBook().getId());
+        System.out.println(loans);
         for (Loan loan_iterate:
                 loans) {
             if( loan_iterate.isBetweenDatesLoanAndReturn(loan.getLoanDate()) ||
                     loan_iterate.isBetweenDatesLoanAndReturn(loan.getReturnDate())){
+                System.out.println(loan.getLoanDate() + "ne peut pas être ajouté");
                 return false;
             }
         }
-
+        System.out.println(loan.getLoanDate() + "peut être ajouté");
         return true;
     }
 }

@@ -65,12 +65,16 @@ public class Loan {
     }
 
     public boolean isBetweenDatesLoanAndReturn(Date date){
+        //tranform to sameformate
+        long longLoanDate = this.loanDate.getTime();
+        long longReturnDate = this.returnDate.getTime();
+        long longDate = date.getTime();
 
-        if(this.loanDate.after(date) &&  this.returnDate.before(date)) return false;
 
-        if(this.loanDate.equals(date) || this.returnDate.equals(date)) return false;
+        if(longLoanDate <= longDate &&  longReturnDate>=longDate) return true;
 
-        return true;
+        return false;
+
     }
 
     public void setReader(Reader reader) {
