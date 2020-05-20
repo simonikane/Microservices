@@ -66,17 +66,34 @@ public class LoanController {
     }
 
     private boolean loanCanBeAddToDataBase(Loan loan, LoanRepository loanRepository){
-        List<Loan> loans = loanRepository.findByBookId(loan.getBook().getId());
-        System.out.println(loans);
+        List<Loan> loans = loanRepository.findByAvailableLoanAndBookId(false,loan.getBook().getId());
         for (Loan loan_iterate:
                 loans) {
-            if( loan_iterate.isBetweenDatesLoanAndReturn(loan.getLoanDate()) ||
-                    loan_iterate.isBetweenDatesLoanAndReturn(loan.getReturnDate())){
+            if ((loan_iterate.isBetweenDatesLoanAndReturn(loan.getLoanDate()) ||
+                    loan_iterate.isBetweenDatesLoanAndReturn(loan.getReturnDate()))) {
                 return false;
             }
         }
 
         return true;
     }
+
+    @PostMapping("/library/return_loans")
+    public String returnLoan(@RequestBody Map<String,Object> bodyContent){
+        List listBookIds = (List) bodyContent.get("book_id");
+
+        //
+        Date dateReturn = new Date(System.currentTimeMillis());
+        for(Object bookIdObject : listBookIds){
+            Long bookId = Long.valueOf( (int) bookIdObject);
+            loanRepository.
+                    findByAvailableLoanAndBookId(false,bookId).
+                    stream().forEach((loan) -> {loan.setAvailableLoan(true);
+                                                loan.setReturnDate(dateReturn);
+                                                loanRepository.save(loan);});
+        }
+        return "OK";
+    }
+
 
 }
