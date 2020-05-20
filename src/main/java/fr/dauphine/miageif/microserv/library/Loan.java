@@ -23,6 +23,9 @@ public class Loan {
     @Column
     private Date returnDate;
 
+    @Column
+    private boolean availableLoan;
+
     public Long getId() {
         return id;
     }
@@ -70,7 +73,6 @@ public class Loan {
         long longReturnDate = this.returnDate.getTime();
         long longDate = date.getTime();
 
-
         if(longLoanDate <= longDate &&  longReturnDate>=longDate) return true;
 
         return false;
@@ -106,5 +108,13 @@ public class Loan {
         return "Loan{" +
                 "id=" + id +
                 '}';
+    }
+
+    public void setAvailableLoan(boolean availableBook) {
+        this.availableLoan = availableBook;
+    }
+
+    public boolean isAvailableLoan() {
+        return availableLoan;
     }
 }

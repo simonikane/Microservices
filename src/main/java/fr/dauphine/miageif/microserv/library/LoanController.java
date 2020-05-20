@@ -2,11 +2,8 @@ package fr.dauphine.miageif.microserv.library;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.sax.SAXResult;
-import java.awt.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +30,6 @@ public class LoanController {
     @PostMapping("/library/save_loan")
     private String saveLoan(@RequestBody Map<String,Object> bodyContent){
 
-        //TODO : Recupérer from JSON
         List listBookIds = (List) bodyContent.get("book_id");
         Long readerId = Long.valueOf((int) bodyContent.get("reader_id"));
 
@@ -61,10 +57,11 @@ public class LoanController {
             Loan loan = new Loan(reader,book,loanDate,returnDate);
 
             if(loanCanBeAddToDataBase(loan,loanRepository)){
+                loan.setAvailableLoan(false);
                 loanRepository.save(loan);
             }
         }
-
+        //TODO: Change the renturn
         return "Ok";
     }
 
@@ -75,11 +72,11 @@ public class LoanController {
                 loans) {
             if( loan_iterate.isBetweenDatesLoanAndReturn(loan.getLoanDate()) ||
                     loan_iterate.isBetweenDatesLoanAndReturn(loan.getReturnDate())){
-                System.out.println(loan.getLoanDate() + "ne peut pas être ajouté");
                 return false;
             }
         }
-        System.out.println(loan.getLoanDate() + "peut être ajouté");
+
         return true;
     }
+
 }
