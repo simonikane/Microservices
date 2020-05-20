@@ -95,5 +95,13 @@ public class LoanController {
         return "OK";
     }
 
+    @GetMapping("/library/loan_book/{book_id}")
+    public List<Loan> loanBook(@PathVariable Long book_id){
+        return loanRepository.findByBookId(book_id);
+    }
 
+    @GetMapping("/library/loan_reader/{reader_id}")
+    public List<Loan> loanReader(@PathVariable Long reader_id){
+        return loanRepository.findByReaderId(reader_id);
+    }
 }
