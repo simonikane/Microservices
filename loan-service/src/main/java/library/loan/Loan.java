@@ -1,8 +1,7 @@
 package library.loan;
 
-
-import library.reader.Reader;
 import library.book.Book;
+import library.reader.Reader;
 
 import javax.persistence.*;
 import java.util.Date;

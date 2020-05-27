@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 //Test
 public class LibraryApplication {
-    /*
+
     public static void main(String[] args) {
         SpringApplication.run(LibraryApplication.class, args);
-    }*/
+    }
 
 }
