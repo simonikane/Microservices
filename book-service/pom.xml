@@ -28,6 +28,4 @@
         </plugins>
         <finalName>microservice-book</finalName>
     </build>
-
-
 </project>
